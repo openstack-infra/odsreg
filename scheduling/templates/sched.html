@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+{% if list_calls %}
+<h2>Would have pushed to sched.org:</h2>
+{{ list_calls|safe }}
+{% else %}
+<h2>Sched.org synchronization successful</h2>
+{% endif %}
+<p>
+<a class=roundedButton href="/scheduling/{{topic.id}}">Back to scheduling</A>
+{% endblock %}

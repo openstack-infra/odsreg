@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block helppage %}
+<p>Welcome to the Design Summit session suggestion system.</p>
+<p>This is the main screen. It lists all sessions suggested so far.</p>
+<p>Each session has a topic, a title and a proposer. You can see the details of a proposed session by clicking on the title. You can sort the results by clicking on the corresponding table headers.</p>
+<p>If you want to suggest your own session subject, click on <i>Suggest session</i>. If you're a topic lead, you will see the <i>Review topic</i> button that lets you review sessions suggested for your topic.</p>
+{% endblock %}
+{% block content %}
+<script type="text/javascript" src="/media/sorting.js"></script>
+<a class=roundedButton href=/cfp/create>Suggest session</A>
+{% for topic in reviewable_topics %}
+<a class=roundedButton href="/cfp/topic/{{ topic.id }}">Review topic: {{ topic.name }}</A>
+{% endfor %}
+<table>
+<tr>
+<th><a class="nolink"
+     href="" onclick="ts_resortTable(this); return false;">Topic<img
+     class="sortarrow" src="/media/arrowBlank" height="6" width="9"></a></th>
+<th><a class="nolink"
+     href="" onclick="ts_resortTable(this); return false;">Title<img
+     class="sortarrow" src="/media/arrowBlank" height="6" width="9"></a>
+     <span class=small>(Click to view/edit)</span></th>
+<th><a class="nolink"
+     href="" onclick="ts_resortTable(this); return false;">Proposer<img
+     class="sortarrow" src="/media/arrowBlank" height="6" width="9"></a></th>
+<th class="right"><a class="nolink"
+     href="" onclick="ts_resortTable(this); return false;">Status<img
+     class="sortarrow" src="/media/arrowBlank" height="6" width="9"></a></th>
+</tr>
+{% for proposal in proposals %}
+<tr>
+<td>{{ proposal.topic.name }}</td>
+<td>
+{% if proposal.proposer == req.user and proposal.status != 'A' %}
+    <a href="/cfp/edit/{{ proposal.id }}">
+{% else %}
+    <a href="/cfp/details/{{ proposal.id }}">
+{% endif %}
+{{ proposal.title }}</a>
+</td>
+<td>{{ proposal.proposer.first_name }} {{ proposal.proposer.last_name }}</td>
+<td class="right"><span class="sortkey">{{ proposal.status }}</span>
+{% if proposal.scheduled %}
+Scheduled
+{% else %}
+{{ proposal.get_status_display }}
+{% endif %}
+</td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}
+{% block extrafooter %}
+{% endblock %}

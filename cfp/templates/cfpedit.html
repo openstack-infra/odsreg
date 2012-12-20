@@ -1,0 +1,20 @@
+{% extends "regform.html" %}
+{% block helppage %}
+<p>This screen lets you change the details of a proposed session.</p>
+<p>Note that you cannot change the topic you proposed your session in. You'll have to ask the topic lead to redirect your suggestion to another topic.</p>
+{% endblock %}
+{% block formtitle %}
+<h2>Edit proposed {{proposal.topic.name}} session</h2>
+{% if proposal.reviewer_notes %}
+<h4>Reviewer notes:</h4>
+<p>{{ proposal.reviewer_notes }}</p>
+{% endif %}
+<form action="/cfp/edit/{{ proposal.id }}" method="post">
+{% endblock %}
+{% block formfooter %}
+<input id="toggleButton" class="roundedButton" type="submit" value="Modify" />
+{% if proposal.proposer == req.user and proposal.status != 'A' and proposal.status != 'S' %}
+<a class=roundedButton href="/cfp/delete/{{ proposal.id }}">Delete</A>
+{% endif %}
+<a class=roundedButton href="/{{ req.session.lastlist }}">Cancel</A>
+{% endblock %}

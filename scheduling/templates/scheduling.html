@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block helppage %}
+<p>This is the topic lead scheduling screen.</p>
+<p>On the left side you'll see the <i>Proposals to schedule</i>. That's the list of sessions that are in <i>Preapproved</i> state that you need to include in your schedule. On the right side you have the resulting <i>Schedule</i>, with one rectangle for each time slot you have available in your topic.</p>
+<p>You assign sessions to slots simply by drag-and-dropping from the left column to the right column. You remove a session from a slot by clicking the <img src=/media/close.gif> icon that appears next to it.</p>
+<p>Assigned sessions switch to <i>Scheduled</i> state, and their status cannot be changed anymore from the topic review screen. You have to remove them from the schedule if you want to change their status.</p>
+<p>You can assign multiple sessions in a single slot. If you do that, it's generally a good idea to also rename the merged session title and provide a small description that will appear before each merged session descriptions. You can do so by clicking on the <img src=/media/edit.gif> icon in the slot.</p>
+<p>You can also swap slots positions in your schedule, while keeping their content intact, by clicking on the <img src=/media/loop.gif> icon.</p>
+<p>Once your schedule is complete, you can click on the <i>Push to Sched</i> button to sync your schedule with the general sched.org online schedule.</p>
+{% endblock %}
+{% block content %}
+<h2>Scheduling ({{topic.name}})</h2>
+<div id="scheduleform" class="span-24">
+<form id="theform" method="post" action="">
+<input type=hidden name="action"/>
+<input type=hidden name="proposal"/>
+<input type=hidden name="slot"/>
+<a class=roundedButton href="/cfp/topic/{{topic.id}}">Back to track review</A>
+<a class=roundedButton href="/scheduling/publish/{{topic.id}}">Push to Sched</A>
+</form>
+</div>
+<div class="span-24">
+<div class="sessionlist" class="span-8">
+<h4>Proposals to schedule:</h4>
+{% for line in accepted %}
+<div class="sessionlistitem"><a class="accepted" id="{{line.id}}" href="#">{{ line.title }}</a></div>
+{% endfor %}
+</div>
+<div class="schedulelist" class="span-8">
+<h4>Schedule:</h4>
+{% for line in schedule %}
+<div class="schedulelistitem" id="{{line.id}}">{{line.start_time}}
+<a href="/scheduling/swap/{{ line.id }}"><img src=/media/loop.gif></A>
+{% if line.title %}
+: <b>{{line.title}}</b>
+{% endif %}
+{% for proposal in line.proposals.all %}
+{% if forloop.counter == 1 %}
+<a href="/scheduling/edit/{{ line.id }}"><img src=/media/edit.gif></A></br>
+{% endif %}
+- {{proposal.title}} <a href="#" onClick="action('del', {{proposal.id}}, {{line.id}})"><img src=/media/close.gif></A></br>
+{% endfor %}
+</div>
+{% endfor %}
+</div>
+</div>
+<script>
+  function action(act, proposal, slot)
+  {
+     var theform = document.querySelector('#theform');
+     theform.action.value = act;
+     theform.proposal.value = proposal;
+     theform.slot.value = slot;
+     theform.submit();
+  }
+
+  var links = document.querySelectorAll('a.accepted'), el = null;
+  for (var i = 0; i < links.length; i++) {
+    el = links[i];
+    el.setAttribute('draggable', 'true');
+    el.addEventListener('dragstart', function (e) {
+      e.dataTransfer.effectAllowed = 'copy';
+      e.dataTransfer.setData('Text', this.id);
+    }, false);
+  }
+
+  var links = document.querySelectorAll('div.schedulelistitem'), el = null;
+  for (var i = 0; i < links.length; i++) {
+    el = links[i];
+    el.addEventListener('dragover', function (e) {
+      if (e.preventDefault) e.preventDefault(); // allows us to drop
+      this.classList.add('over');
+      e.dataTransfer.dropEffect = 'copy';
+      return false;
+    }, false);
+
+    // to get IE to work
+    el.addEventListener('dragenter', function (e) {
+      this.classList.add('over');
+      return false;
+    }, false);
+
+    el.addEventListener('dragleave', function (e) {
+      this.classList.remove('over');
+    }, false);
+
+    el.addEventListener('drop', function (e) {
+      if (e.stopPropagation) e.stopPropagation();
+
+      var source = document.getElementById(e.dataTransfer.getData('Text'));
+      action('add', source.id, this.id);
+      return false;
+    }, true);
+  }
+
+</script>
+{% endblock %}

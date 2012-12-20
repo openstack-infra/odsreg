@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+{% for topic in topics %}
+<div class="span-5">
+<h2>{{ topic.name }}</h2>
+</div>
+<div style="clear:right">
+<iframe frameborder=0 width=580 height=100 src=/scheduling/graph/{{ topic.id }}></iframe>
+</div>
+{% endfor %}
+{% endblock %}
+{% block extrafooter %}
+{% endblock %}

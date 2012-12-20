@@ -1,0 +1,13 @@
+{% extends "regform.html" %}
+{% block helppage %}
+<p>This screen lets you change the topic for a proposed session.</p>
+<p>The status for that session will be set back to <i>Unreviewed</i>.</p>
+{% endblock %}
+{% block formtitle %}
+<h2>Switch topic for proposed session</h2>
+<form action="/cfp/switch/{{ proposal.id }}" method="post">
+{% endblock %}
+{% block formfooter %}
+<input id="toggleButton" class="roundedButton" type="submit" value="Switch" />
+<a class=roundedButton href="/{{ req.session.lastlist }}">Cancel</A>
+{% endblock %}

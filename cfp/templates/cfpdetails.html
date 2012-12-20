@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block helppage %}
+<p>This screen lets you see the details of a proposed session.</p>
+<p>Note that you can only edit sessions that you suggested yourself (or if you're the topic lead). Sessions in <i>Preapproved</i> state cannot be changed.</p>
+{% endblock %}
+{% block content %}
+<h2>{{ proposal.title }}</h2>
+<p>Proposed by <b>{{ proposal.proposer }}</b>
+in topic <b>{{ proposal.topic }}</b></p>
+<h4>Description</h4>
+<pre>{{ proposal.description }}</pre>
+{% if blueprints %}
+<h4>Related blueprints</h4>
+<ul>
+{% for name, link in blueprints.items %}
+<li><a href="{{ link }}">{{ name }}</a></li>
+{% endfor %}
+</ul>
+{% endif %}
+<h4>Status</h4>
+<p>This proposal is in <b>{{ proposal.get_status_display }}</b> state.</p>
+<a class=roundedButton href="/{{ req.session.lastlist }}">Back</A>
+{% endblock %}
