@@ -1,0 +1,8 @@
+*.pyc
+*.swo
+*.swp
+*.sqlite
+*.db
+*~
+local_settings.py
+slots.json
