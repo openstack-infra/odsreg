@@ -13,8 +13,8 @@
 {% endblock %}
 {% block formfooter %}
 <input id="toggleButton" class="roundedButton" type="submit" value="Modify" />
-{% if proposal.proposer == req.user and proposal.status != 'A' and proposal.status != 'S' %}
+{% if proposal.proposer == user and proposal.status != 'A' and proposal.status != 'S' %}
 <a class=roundedButton href="/cfp/delete/{{ proposal.id }}">Delete</A>
 {% endif %}
-<a class=roundedButton href="/{{ req.session.lastlist }}">Cancel</A>
+<a class=roundedButton href="/{{ request.session.lastlist }}">Cancel</A>
 {% endblock %}

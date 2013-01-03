@@ -16,7 +16,7 @@
 import urllib
 import urllib2
 
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.utils.encoding import smart_str
@@ -91,11 +91,10 @@ def scheduling(request, topicid):
     accepted = Proposal.objects.filter(status='A', scheduled=False,
                                        topic=topic)
     schedule = Slot.objects.filter(topic=topic)
-    return render_to_response("scheduling.html",
-                              {'req': request,
-                               'accepted': accepted,
-                               'schedule': schedule,
-                               'topic': topic})
+    return render(request, "scheduling.html",
+                  {'accepted': accepted,
+                   'schedule': schedule,
+                   'topic': topic})
 
 
 def end_time(start_time):
@@ -140,10 +139,9 @@ def publish(request, topicid):
                     f.close()
                     f = urllib2.urlopen(baseurl + "add", data)
                     f.close()
-    return render_to_response("sched.html",
-                              {'req': request,
-                               'list_calls': list_calls,
-                               'topic': topic})
+    return render(request, "sched.html",
+                  {'list_calls': list_calls,
+                   'topic': topic})
 
 
 def edit(request, slotid):
@@ -157,12 +155,11 @@ def edit(request, slotid):
             return HttpResponseRedirect('/scheduling/%s' % slot.topic.id)
     else:
         form = SlotForm(instance=slot)
-    return render_to_response('slotedit.html',
-                              {'req': request,
-                               'form': form,
-                               'title': combined_title(slot),
-                               'full_desc': combined_description(slot),
-                               'slot': slot})
+    return render(request, 'slotedit.html',
+                  {'form': form,
+                   'title': combined_title(slot),
+                   'full_desc': combined_description(slot),
+                   'slot': slot})
 
 
 def swap(request, slotid):
@@ -188,11 +185,10 @@ def swap(request, slotid):
     for slot in available_slots:
         triplet = (slot.start_time, slot.id, combined_title(slot))
         newslots.append(triplet)
-    return render_to_response('slotswap.html',
-                              {'req': request,
-                               'title': combined_title(oldslot),
-                               'oldslot': oldslot,
-                               'newslots': newslots})
+    return render(request, 'slotswap.html',
+                  {'title': combined_title(oldslot),
+                   'oldslot': oldslot,
+                   'newslots': newslots})
 
 
 def graph(request, topicid):
@@ -215,7 +211,4 @@ def graph(request, topicid):
             nbproposed += 1
     stats['max'] = max(stats['avail'], nbproposed + nbscheduled)
 
-    return render_to_response("graph.html",
-                              {'req': request,
-                               'stats': stats,
-                               'topic': topic})
+    return render(request, "graph.html", {'stats': stats, 'topic': topic})

@@ -17,8 +17,8 @@ function overlay() {
       <div class="span-5">
         <h1 id="logo"><a href="/">OpenStack</a></h1>
       </div>
-        <h1>Sessions for the Grizzly Design Summit</h1>
-        <h3>OpenStack Conference, San Diego, Oct 15-18, 2012</h3>
+        <h1>{{ event.title }}</h1>
+        <h3>{{ event.subtitle }}</h3>
     </div>
   </div>
 
@@ -41,10 +41,10 @@ function overlay() {
 <hr>
 Need <a href='#' onclick='overlay()'>Help</a>?</br>
 {% block extrafooter %}{% endblock %}
-      {% if req.user.is_authenticated %}
-You are logged in as {{ req.user.username }}. <a href=/logout>Logout</A>
+      {% if user.is_authenticated %}
+You are logged in as {{ user.username }}. <a href=/logout>Logout</A>
       {% else %}
-You are not logged in. <a href="/openid/login?next={{ req.path }}">Log in</A>
+You are not logged in. <a href="/openid/login?next={{request.path}}">Log in</A>
       {% endif %}
     </div>
   </div>

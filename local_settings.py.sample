@@ -32,7 +32,9 @@ DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 #OPENID_USE_AS_ADMIN_LOGIN = True
 
-# Change to match your Sched event
+# Change to match your event
+EVENT_TITLE = "Grizzly Design Summit"
+EVENT_SUBTITLE = "OpenStack Summit, San Diego, Oct 15-18, 2012"
 SCHED_URL = "essexdesignsummit"
 SCHED_API_KEY = "getThisFromSched"
 

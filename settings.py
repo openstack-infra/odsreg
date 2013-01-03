@@ -34,6 +34,9 @@ DATABASES = {
     }
 }
 
+EVENT_TITLE = "Grizzly Design Summit"
+EVENT_SUBTITLE = "OpenStack Summit, San Diego, Oct 15-18, 2012"
+
 SCHED_URL = "essexdesignsummit"
 SCHED_API_KEY = "getThisFromSched"
 
@@ -56,6 +59,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.i18n",
     "django.core.context_processors.media",
     "django.core.context_processors.request",
+    "cfp.context_processors.event",
 )
 
 MIDDLEWARE_CLASSES = (

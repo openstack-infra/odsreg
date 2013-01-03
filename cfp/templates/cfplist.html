@@ -31,7 +31,7 @@
 <tr>
 <td>{{ proposal.topic.name }}</td>
 <td>
-{% if proposal.proposer == req.user and proposal.status != 'A' %}
+{% if proposal.proposer == user and proposal.status != 'A' %}
     <a href="/cfp/edit/{{ proposal.id }}">
 {% else %}
     <a href="/cfp/details/{{ proposal.id }}">
