@@ -23,8 +23,6 @@
     ],
     "topics": {
         "Swift": {
-            "description": "Sessions about OpenStack Object Storage (Swift)",
-            "lead_username": "notmyname",
             "room": "A",
             "start_day": "2012-09-20", "first_slot": "09:30",
             "end_day": "2012-09-21", "last_slot": "10:00" }

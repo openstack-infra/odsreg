@@ -31,10 +31,15 @@ settings there.
 Create empty database:
 ./manage.py syncdb
 
-Copy slots.json.sample to slots.json and edit the file to match
-the topics, rooms and time slots for each topic. Then run:
+Copy topics.json.sample to topics.json and edit the file to match
+the topics you want to have. Then run:
 
-./manage.py loadtopics slots.json
+./manage.py loadtopics topics.json
 
 Then run a dev server using:
 ./manage.py runserver
+
+When you have room layout, copy slots.json.sample to slots.json and edit
+the file to match the rooms and time slots for each topic. Then run:
+
+./manage.py loadslots slots.json

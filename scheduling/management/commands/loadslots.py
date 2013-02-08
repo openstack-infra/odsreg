@@ -46,10 +46,8 @@ class Command(BaseCommand):
 
         for topicname, desc in data['topics'].iteritems():
             started = False
-            t = Topic(name=topicname, lead_username=desc['lead_username'],
-                      description=desc['description'])
+            t = Topic.objects.get(name=topicname)
             room = Room.objects.get(code=desc['room'])
-            t.save()
             for (d, h) in slot_generator(data):
                 if (d == desc['start_day'] and h == desc['first_slot']):
                     started = True
