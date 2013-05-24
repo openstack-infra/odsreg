@@ -73,14 +73,6 @@ def topicstatus(request):
 
 
 @login_required
-def details(request, proposalid):
-    proposal = Proposal.objects.get(id=proposalid)
-    return render(request, "cfpdetails.html",
-                  {'proposal': proposal,
-                   'blueprints': linkify(proposal.blueprints)})
-
-
-@login_required
 def create(request):
     if request.method == 'POST':
         form = ProposalForm(request.POST)
@@ -98,11 +90,14 @@ def create(request):
 
 
 @login_required
-def edit(request, proposalid):
+def details(request, proposalid):
     proposal = Proposal.objects.get(id=proposalid)
-    if (((proposal.proposer != request.user) or proposal.status in ['A', 'S'])
-        and not topiclead(request.user, proposal.topic)):
-        return forbidden()
+    if (proposal.scheduled or
+        (((proposal.proposer != request.user) or proposal.status == 'A')
+          and not topiclead(request.user, proposal.topic))):
+        return render(request, "cfpdetails.html",
+                      {'proposal': proposal,
+                       'blueprints': linkify(proposal.blueprints)})
     if request.method == 'POST':
         form = ProposalEditForm(request.POST, instance=proposal)
         if form.is_valid():

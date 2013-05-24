@@ -39,11 +39,7 @@
 {% endif %}
 </td>
 <td>
-{% if proposal.scheduled %}
 <a href="/cfp/details/{{ proposal.id }}">{{ proposal.title }}</a>
-{% else %}
-<a href="/cfp/edit/{{ proposal.id }}">{{ proposal.title }}</a>
-{% endif %}
 </td>
 <td>{{ proposal.proposer.first_name }} {{ proposal.proposer.last_name }}</td>
 <td class="right"><span class="sortkey">{{ proposal.status }}</span>

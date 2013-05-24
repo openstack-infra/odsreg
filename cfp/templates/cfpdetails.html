@@ -18,6 +18,12 @@ in topic <b>{{ proposal.topic }}</b></p>
 </ul>
 {% endif %}
 <h4>Status</h4>
-<p>This proposal is in <b>{{ proposal.get_status_display }}</b> state.</p>
+<p>This proposal is in <b>
+{% if proposal.scheduled %}
+Scheduled
+{% else %}
+{{ proposal.get_status_display }}
+{% endif %}
+</b> state.</p>
 <a class=roundedButton href="/{{ request.session.lastlist }}">Back</A>
 {% endblock %}
