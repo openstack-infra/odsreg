@@ -25,5 +25,8 @@ Scheduled
 {{ proposal.get_status_display }}
 {% endif %}
 </b> state.</p>
+{% if editable %}
+<a class=roundedButton href="/cfp/edit/{{ proposal.id }}">Edit</A>
+{% endif %}
 <a class=roundedButton href="/{{ request.session.lastlist }}">Back</A>
 {% endblock %}

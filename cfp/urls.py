@@ -18,6 +18,7 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns('odsreg.cfp.views',
     (r'^details/(\d+)$', 'details'),
+    (r'^edit/(\d+)$', 'edit'),
     (r'^create$', 'create'),
     (r'^review/(\d+)$', 'review'),
     (r'^switch/(\d+)$', 'switch'),

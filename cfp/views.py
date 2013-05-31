@@ -89,15 +89,26 @@ def create(request):
     return render(request, 'cfpcreate.html', {'topics': topics, 'form': form})
 
 
+def is_editable(proposal, user):
+    return ((not proposal.scheduled) and
+            ((proposal.proposer == user and proposal.status != 'A') or
+             topiclead(user, proposal.topic)))
+
+
 @login_required
 def details(request, proposalid):
     proposal = Proposal.objects.get(id=proposalid)
-    if (proposal.scheduled or
-        (((proposal.proposer != request.user) or proposal.status == 'A')
-          and not topiclead(request.user, proposal.topic))):
-        return render(request, "cfpdetails.html",
-                      {'proposal': proposal,
-                       'blueprints': linkify(proposal.blueprints)})
+    return render(request, "cfpdetails.html",
+                  {'proposal': proposal,
+                   'editable': is_editable(proposal, request.user),
+                   'blueprints': linkify(proposal.blueprints)})
+
+
+@login_required
+def edit(request, proposalid):
+    proposal = Proposal.objects.get(id=proposalid)
+    if not is_editable(proposal, request.user):
+        return forbidden()
     if request.method == 'POST':
         form = ProposalEditForm(request.POST, instance=proposal)
         if form.is_valid():
