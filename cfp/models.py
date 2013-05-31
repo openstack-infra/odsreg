@@ -77,11 +77,6 @@ class Proposal(models.Model):
                   "blueprint called 'accounting'. You can specify multiple "
                   "links, separated by spaces. This field is optional.")
     status = models.CharField(max_length=1, choices=STATUSES)
-    proposer_notes = models.TextField(blank=True,
-        help_text="Notes from the proposer to the evaluation committee. "
-                  "Those notes will not appear in the public description. "
-                  "This field is optional.")
-    reviewer_notes = models.TextField(blank=True)
     scheduled = models.BooleanField(default=False)
     last_modified = models.DateTimeField(auto_now=True)
 
@@ -92,23 +87,38 @@ class Proposal(models.Model):
         return self.title
 
 
+class Comment(models.Model):
+    proposal = models.ForeignKey(Proposal)
+    posted_date = models.DateTimeField(auto_now=True)
+    author = models.ForeignKey(User)
+    content = models.TextField(verbose_name="Add your comment")
+
+    class Meta:
+        ordering = ['posted_date']
+
+
+class CommentForm(ModelForm):
+    class Meta:
+        model = Comment
+        exclude = ('proposal', 'posted_date', 'author')
+
+
 class ProposalForm(ModelForm):
     class Meta:
         model = Proposal
-        exclude = ('proposer', 'reviewer_notes', 'status', 'scheduled')
+        exclude = ('proposer', 'status', 'scheduled')
 
 
 class ProposalEditForm(ModelForm):
     class Meta:
         model = Proposal
-        exclude = ('topic', 'proposer', 'reviewer_notes', 'status',
-                   'scheduled')
+        exclude = ('topic', 'proposer', 'status', 'scheduled')
 
 
 class ProposalReviewForm(ModelForm):
     class Meta:
         model = Proposal
-        fields = ('status', 'reviewer_notes')
+        fields = ('status',)
 
 
 class ProposalSwitchForm(ModelForm):

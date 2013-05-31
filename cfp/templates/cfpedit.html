@@ -5,10 +5,6 @@
 {% endblock %}
 {% block formtitle %}
 <h2>Edit proposed {{proposal.topic.name}} session</h2>
-{% if proposal.reviewer_notes %}
-<h4>Reviewer notes:</h4>
-<p>{{ proposal.reviewer_notes }}</p>
-{% endif %}
 <form action="/cfp/edit/{{ proposal.id }}" method="post">
 {% endblock %}
 {% block formfooter %}

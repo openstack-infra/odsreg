@@ -21,8 +21,8 @@ from django.contrib.auth import logout
 from django.core.mail import EmailMessage
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.utils.encoding import smart_str
-from odsreg.cfp.models import Proposal, Topic
-from odsreg.cfp.models import ProposalForm, ProposalEditForm
+from odsreg.cfp.models import Proposal, Topic, Comment
+from odsreg.cfp.models import ProposalForm, ProposalEditForm, CommentForm
 from odsreg.cfp.models import ProposalReviewForm, ProposalSwitchForm
 
 
@@ -98,8 +98,21 @@ def is_editable(proposal, user):
 @login_required
 def details(request, proposalid):
     proposal = Proposal.objects.get(id=proposalid)
+    comments = Comment.objects.filter(proposal=proposal)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.proposal = proposal
+            comment.author = request.user
+            comment.save()
+            return HttpResponseRedirect('/%s' % request.session['lastlist'])
+    else:
+        form = CommentForm()
     return render(request, "cfpdetails.html",
                   {'proposal': proposal,
+                   'form': form,
+                   'comments': comments,
                    'editable': is_editable(proposal, request.user),
                    'blueprints': linkify(proposal.blueprints)})
 
@@ -154,6 +167,8 @@ def switch(request, proposalid):
 @login_required
 def review(request, proposalid):
     proposal = Proposal.objects.get(id=proposalid)
+    #TODO Allow comment while reviewing to be included in email
+    reviewer_notes = ""
     if not topiclead(request.user, proposal.topic):
         return forbidden()
     current_status = proposal.status
@@ -180,7 +195,7 @@ You can edit your proposal at: %s/cfp/edit/%s""" \
                            smart_str(proposal.title),
                            proposal.topic.lead_username,
                            status_long, proposal.get_status_display(),
-                           smart_str(proposal.reviewer_notes),
+                           smart_str(reviewer_notes),
                            settings.SITE_ROOT, proposalid)
                 email = EmailMessage(settings.EMAIL_PREFIX +
                          "Status change on your session proposal",

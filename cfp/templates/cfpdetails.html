@@ -1,9 +1,9 @@
-{% extends "base.html" %}
+{% extends "regform.html" %}
 {% block helppage %}
 <p>This screen lets you see the details of a proposed session.</p>
 <p>Note that you can only edit sessions that you suggested yourself (or if you're the topic lead). Sessions in <i>Preapproved</i> state cannot be changed.</p>
 {% endblock %}
-{% block content %}
+{% block formtitle %}
 <h2>{{ proposal.title }}</h2>
 <p>Proposed by <b>{{ proposal.proposer }}</b>
 in topic <b>{{ proposal.topic }}</b></p>
@@ -29,4 +29,17 @@ Scheduled
 <a class=roundedButton href="/cfp/edit/{{ proposal.id }}">Edit</A>
 {% endif %}
 <a class=roundedButton href="/{{ request.session.lastlist }}">Back</A>
+<h4>Comments</h4>
+<hr>
+{% for comment in comments %}
+<p>Comment by {{ comment.author }}
+on {{ comment.posted_date|date:"Y-m-d G:i O" }}:<br>
+{{ comment.content|linebreaks|urlize }}</p>
+<br><hr>
+{% endfor %}
+<form action="/cfp/details/{{ proposal.id }}" method="post">
+{% endblock %}
+{% block formfooter %}
+<input id="toggleButton" class="roundedButton" type="submit"
+       value="Add comment" />
 {% endblock %}
