@@ -15,7 +15,7 @@
 
 import urllib
 from django.db import models
-from django.forms import ModelForm
+from django.forms import ModelForm, CharField, Textarea
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 
@@ -116,6 +116,7 @@ class ProposalEditForm(ModelForm):
 
 
 class ProposalReviewForm(ModelForm):
+    comment = CharField(widget=Textarea)
     class Meta:
         model = Proposal
         fields = ('status',)

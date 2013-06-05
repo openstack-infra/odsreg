@@ -168,7 +168,6 @@ def switch(request, proposalid):
 def review(request, proposalid):
     proposal = Proposal.objects.get(id=proposalid)
     #TODO Allow comment while reviewing to be included in email
-    reviewer_notes = ""
     if not topiclead(request.user, proposal.topic):
         return forbidden()
     current_status = proposal.status
@@ -177,6 +176,14 @@ def review(request, proposalid):
         form = ProposalReviewForm(request.POST, instance=proposal)
         if form.is_valid():
             form.save()
+            reviewer_notes = ''
+            if form.cleaned_data['comment']:
+                reviewer_notes = form.cleaned_data['comment']
+                c = Comment()
+                c.proposal = proposal
+                c.author = request.user
+                c.content = reviewer_notes
+                c.save()
             if (settings.SEND_MAIL and current_status != proposal.status):
                 lead = User.objects.get(username=proposal.topic.lead_username)
                 if (lead.email and proposal.proposer.email):
@@ -206,9 +213,11 @@ You can edit your proposal at: %s/cfp/edit/%s""" \
             return HttpResponseRedirect('/cfp/topic/%d' % proposal.topic.id)
     else:
         form = ProposalReviewForm(instance=proposal)
+    comments = Comment.objects.filter(proposal=proposal)
     return render(request, 'cfpreview.html',
                   {'form': form,
                    'proposal': proposal,
+                   'comments': comments,
                    'blueprints': linkify(proposal.blueprints)})
 
 
