@@ -98,7 +98,6 @@ def is_editable(proposal, user):
 @login_required
 def details(request, proposalid):
     proposal = Proposal.objects.get(id=proposalid)
-    comments = Comment.objects.filter(proposal=proposal)
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
@@ -106,9 +105,9 @@ def details(request, proposalid):
             comment.proposal = proposal
             comment.author = request.user
             comment.save()
-            return HttpResponseRedirect('/%s' % request.session['lastlist'])
     else:
         form = CommentForm()
+    comments = Comment.objects.filter(proposal=proposal)
     return render(request, "cfpdetails.html",
                   {'proposal': proposal,
                    'form': form,

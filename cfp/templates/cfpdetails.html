@@ -29,14 +29,7 @@ Scheduled
 <a class=roundedButton href="/cfp/edit/{{ proposal.id }}">Edit</A>
 {% endif %}
 <a class=roundedButton href="/{{ request.session.lastlist }}">Back</A>
-<h4>Comments</h4>
-<hr>
-{% for comment in comments %}
-<p>Comment by {{ comment.author }}
-on {{ comment.posted_date|date:"Y-m-d G:i O" }}:<br>
-{{ comment.content|linebreaks|urlize }}</p>
-<br><hr>
-{% endfor %}
+{% include "comments.html" %}
 <form action="/cfp/details/{{ proposal.id }}" method="post">
 {% endblock %}
 {% block formfooter %}
