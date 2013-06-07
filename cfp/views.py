@@ -21,26 +21,11 @@ from django.contrib.auth import logout
 from django.core.mail import EmailMessage
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.utils.encoding import smart_str
+
 from odsreg.cfp.models import Proposal, Topic, Comment
-from odsreg.cfp.models import ProposalForm, ProposalEditForm, CommentForm
-from odsreg.cfp.models import ProposalReviewForm, ProposalSwitchForm
-
-
-def linkify(blueprints):
-    links = {}
-    for bp in blueprints.split():
-        (project, name) = bp.split('/')
-        links[bp] = "https://blueprints.launchpad.net/%s/+spec/%s" \
-                 % (project, name)
-    return links
-
-
-def topiclead(user, topic):
-    return (user.username == topic.lead_username) or user.is_staff
-
-
-def forbidden():
-    return HttpResponseForbidden("Forbidden")
+from odsreg.cfp.forms import ProposalForm, ProposalEditForm, CommentForm
+from odsreg.cfp.forms import ProposalReviewForm, ProposalSwitchForm
+from odsreg.cfp.utils import linkify, is_editable, topiclead
 
 
 @login_required
@@ -58,7 +43,7 @@ def list(request):
 def topiclist(request, topicid):
     topic = Topic.objects.get(id=topicid)
     if not topiclead(request.user, topic):
-        return forbidden()
+        return HttpResponseForbidden("Forbidden")
     proposals = Proposal.objects.filter(topic=topicid)
     request.session['lastlist'] = "cfp/topic/%s" % topicid
     return render(request, "topiclist.html",
@@ -89,12 +74,6 @@ def create(request):
     return render(request, 'cfpcreate.html', {'topics': topics, 'form': form})
 
 
-def is_editable(proposal, user):
-    return ((not proposal.scheduled) and
-            ((proposal.proposer == user and proposal.status != 'A') or
-             topiclead(user, proposal.topic)))
-
-
 @login_required
 def details(request, proposalid):
     proposal = Proposal.objects.get(id=proposalid)
@@ -120,7 +99,7 @@ def details(request, proposalid):
 def edit(request, proposalid):
     proposal = Proposal.objects.get(id=proposalid)
     if not is_editable(proposal, request.user):
-        return forbidden()
+        return HttpResponseForbidden("Forbidden")
     if request.method == 'POST':
         form = ProposalEditForm(request.POST, instance=proposal)
         if form.is_valid():
@@ -136,7 +115,7 @@ def edit(request, proposalid):
 def delete(request, proposalid):
     proposal = Proposal.objects.get(id=proposalid)
     if ((proposal.proposer != request.user) or proposal.status in ['A', 'S']):
-        return forbidden()
+        return HttpResponseForbidden("Forbidden")
     if request.method == 'POST':
         proposal.delete()
         return HttpResponseRedirect('/%s' % request.session['lastlist'])
@@ -148,7 +127,7 @@ def switch(request, proposalid):
     proposal = Proposal.objects.get(id=proposalid)
     if ((proposal.proposer != request.user)
       and not topiclead(request.user, proposal.topic)) or proposal.scheduled:
-        return forbidden()
+        return HttpResponseForbidden("Forbidden")
     if request.method == 'POST':
         form = ProposalSwitchForm(request.POST, instance=proposal)
         if form.is_valid():
@@ -166,9 +145,8 @@ def switch(request, proposalid):
 @login_required
 def review(request, proposalid):
     proposal = Proposal.objects.get(id=proposalid)
-    #TODO Allow comment while reviewing to be included in email
     if not topiclead(request.user, proposal.topic):
-        return forbidden()
+        return HttpResponseForbidden("Forbidden")
     current_status = proposal.status
     status_long = proposal.get_status_display()
     if request.method == 'POST':

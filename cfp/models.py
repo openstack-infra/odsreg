@@ -13,36 +13,10 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-import urllib
 from django.db import models
-from django.forms import ModelForm, CharField, Textarea
-from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 
-
-def is_valid_lp_name(value):
-    return value.replace('-', '').isalnum()
-
-
-def validate_bp(value):
-    bps = value.split()
-    for bp in bps:
-        members = bp.split("/")
-        if len(members) != 2:
-            raise ValidationError(u'Blueprints should be specified under'
-                                  ' the form project/blueprint-name')
-        (project, bpname) = list(members)
-        if not is_valid_lp_name(project):
-            raise ValidationError(u'Incorrect project name: %s' % project)
-        if not is_valid_lp_name(bpname):
-            raise ValidationError(u'Incorrect blueprint name: %s' % bpname)
-        f = urllib.urlopen("https://api.launchpad.net/devel/%s/+spec/%s"
-                           % (project, bpname))
-        f.close()
-        if f.getcode() != 200:
-            raise ValidationError(u'No such blueprint: %s/%s'
-                                  ' -- did you create it on Launchpad ?'
-                                  % (project, bpname))
+from cfp.utils import validate_bp
 
 
 class Topic(models.Model):
@@ -95,34 +69,3 @@ class Comment(models.Model):
 
     class Meta:
         ordering = ['posted_date']
-
-
-class CommentForm(ModelForm):
-    class Meta:
-        model = Comment
-        exclude = ('proposal', 'posted_date', 'author')
-
-
-class ProposalForm(ModelForm):
-    class Meta:
-        model = Proposal
-        exclude = ('proposer', 'status', 'scheduled')
-
-
-class ProposalEditForm(ModelForm):
-    class Meta:
-        model = Proposal
-        exclude = ('topic', 'proposer', 'status', 'scheduled')
-
-
-class ProposalReviewForm(ModelForm):
-    comment = CharField(widget=Textarea)
-    class Meta:
-        model = Proposal
-        fields = ('status',)
-
-
-class ProposalSwitchForm(ModelForm):
-    class Meta:
-        model = Proposal
-        fields = ('topic',)

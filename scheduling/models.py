@@ -14,7 +14,7 @@
 #    under the License.
 
 from django.db import models
-from django.forms import ModelForm
+
 from odsreg.cfp.models import Proposal, Topic
 
 
@@ -48,9 +48,3 @@ class Slot(models.Model):
 
     def __unicode__(self):
         return "%s %s %s" % (self.topic.name, self.room.code, self.start_time)
-
-
-class SlotForm(ModelForm):
-    class Meta:
-        model = Slot
-        fields = ('title', 'description')
