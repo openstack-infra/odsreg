@@ -16,7 +16,7 @@
 import json
 
 from django.core.management.base import BaseCommand, CommandError
-from cfp.models import Topic
+from cfp.models import Event, Topic
 
 
 class Command(BaseCommand):
@@ -34,7 +34,11 @@ class Command(BaseCommand):
         except ValueError as exc:
             raise CommandError("Malformed JSON: %s" % exc.message)
 
-        for topicname, desc in data.iteritems():
+        e = Event(title=data['event']['title'],
+                  subtitle=data['event']['subtitle'])
+        e.save()
+
+        for topicname, desc in data['topics'].iteritems():
             t = Topic(name=topicname, lead_username=desc['lead_username'],
                       description=desc['description'])
             t.save()

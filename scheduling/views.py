@@ -16,11 +16,10 @@
 import urllib
 import urllib2
 
-from django.shortcuts import render
-from django.conf import settings
 from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.template.response import TemplateResponse
 from django.utils.encoding import smart_str
-from odsreg.cfp.models import Proposal, Topic
+from odsreg.cfp.models import Proposal, Topic, Event
 from odsreg.cfp.utils import topiclead
 from odsreg.scheduling.forms import SlotForm
 from odsreg.scheduling.models import Slot
@@ -56,21 +55,22 @@ def scheduling(request, topicid):
     accepted = Proposal.objects.filter(status='A', scheduled=False,
                                        topic=topic)
     schedule = Slot.objects.filter(topic=topic)
-    return render(request, "scheduling.html",
-                  {'accepted': accepted,
-                   'schedule': schedule,
-                   'topic': topic})
+    return TemplateResponse(request, "scheduling.html",
+                            {'accepted': accepted,
+                             'schedule': schedule,
+                             'topic': topic})
 
 
 def publish(request, topicid):
+    event = Event.objects.get(status__in=['A', 'C'])
     topic = Topic.objects.get(id=topicid)
     if not topiclead(request.user, topic):
         return HttpResponseForbidden("Forbidden")
     list_calls = ""
-    baseurl = "http://%s.sched.org/api/session/" % settings.SCHED_URL
+    baseurl = "http://%s.sched.org/api/session/" % event.sched_url
     for slot in Slot.objects.filter(topic=topicid):
         if len(slot.proposals.all()) > 0:
-            values = {'api_key': settings.SCHED_API_KEY,
+            values = {'api_key': event.sched_api_key,
                       'session_key': "slot-%d" % combined_id(slot),
                       'name': smart_str(combined_title(slot)),
                       'session_start': slot.start_time,
@@ -81,7 +81,7 @@ def publish(request, topicid):
                       'description': htmlize(smart_str(
                                               full_description(slot)))}
             data = urllib.urlencode(values)
-            if settings.SCHED_API_KEY == "getThisFromSched":
+            if not event.sched_api_key:
                 list_calls += "%s<P>" % data
             else:
                 f = urllib2.urlopen(baseurl + "mod", data)
@@ -89,9 +89,9 @@ def publish(request, topicid):
                     f.close()
                     f = urllib2.urlopen(baseurl + "add", data)
                     f.close()
-    return render(request, "sched.html",
-                  {'list_calls': list_calls,
-                   'topic': topic})
+    return TemplateResponse(request, "sched.html",
+                            {'list_calls': list_calls,
+                             'topic': topic})
 
 
 def edit(request, slotid):
@@ -105,11 +105,11 @@ def edit(request, slotid):
             return HttpResponseRedirect('/scheduling/%s' % slot.topic.id)
     else:
         form = SlotForm(instance=slot)
-    return render(request, 'slotedit.html',
-                  {'form': form,
-                   'title': combined_title(slot),
-                   'full_desc': combined_description(slot),
-                   'slot': slot})
+    return TemplateResponse(request, 'slotedit.html',
+                            {'form': form,
+                             'title': combined_title(slot),
+                             'full_desc': combined_description(slot),
+                             'slot': slot})
 
 
 def swap(request, slotid):
@@ -135,10 +135,10 @@ def swap(request, slotid):
     for slot in available_slots:
         triplet = (slot.start_time, slot.id, combined_title(slot))
         newslots.append(triplet)
-    return render(request, 'slotswap.html',
-                  {'title': combined_title(oldslot),
-                   'oldslot': oldslot,
-                   'newslots': newslots})
+    return TemplateResponse(request, 'slotswap.html',
+                            {'title': combined_title(oldslot),
+                             'oldslot': oldslot,
+                             'newslots': newslots})
 
 
 def graph(request, topicid):
@@ -161,4 +161,6 @@ def graph(request, topicid):
             nbproposed += 1
     stats['max'] = max(stats['avail'], nbproposed + nbscheduled)
 
-    return render(request, "graph.html", {'stats': stats, 'topic': topic})
+    return TemplateResponse(request, "graph.html",
+                            {'stats': stats,
+                             'topic': topic})

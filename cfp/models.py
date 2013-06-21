@@ -19,6 +19,22 @@ from django.contrib.auth.models import User
 from cfp.utils import validate_bp
 
 
+class Event(models.Model):
+    STATUSES = (
+                ('I', 'Inactive'),
+                ('A', 'Active'),
+                ('C', 'CFP closed'),
+               )
+    title = models.CharField(max_length=50)
+    subtitle = models.CharField(max_length=80)
+    sched_url = models.CharField(max_length=40, blank=True)
+    sched_api_key = models.CharField(max_length=50, blank=True)
+    status = models.CharField(max_length=1, choices=STATUSES, default='A')
+
+    def __unicode__(self):
+        return self.title
+
+
 class Topic(models.Model):
     name = models.CharField(max_length=40)
     lead_username = models.CharField(max_length=40)

@@ -31,10 +31,10 @@ settings there.
 Create empty database:
 ./manage.py syncdb
 
-Copy topics.json.sample to topics.json and edit the file to match
-the topics you want to have. Then run:
+Copy event.json.sample to event.json and edit the file to match
+the event and topics you want to have. Then run:
 
-./manage.py loadtopics topics.json
+./manage.py loadevent event.json
 
 Then run a dev server using:
 ./manage.py runserver

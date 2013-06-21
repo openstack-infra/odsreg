@@ -15,11 +15,11 @@
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.shortcuts import render
 from django.conf import settings
 from django.contrib.auth import logout
 from django.core.mail import EmailMessage
 from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.template.response import TemplateResponse
 from django.utils.encoding import smart_str
 
 from odsreg.cfp.models import Proposal, Topic, Comment
@@ -34,9 +34,9 @@ def list(request):
     reviewable_topics = Topic.objects.filter(
         lead_username=request.user.username)
     request.session['lastlist'] = ""
-    return render(request, "cfplist.html",
-                  {'proposals': proposals,
-                   'reviewable_topics': reviewable_topics})
+    return TemplateResponse(request, "cfplist.html",
+                            {'proposals': proposals,
+                             'reviewable_topics': reviewable_topics})
 
 
 @login_required
@@ -46,15 +46,15 @@ def topiclist(request, topicid):
         return HttpResponseForbidden("Forbidden")
     proposals = Proposal.objects.filter(topic=topicid)
     request.session['lastlist'] = "cfp/topic/%s" % topicid
-    return render(request, "topiclist.html",
-                  {'proposals': proposals,
-                   'topic': topic})
+    return TemplateResponse(request, "topiclist.html",
+                            {'proposals': proposals,
+                             'topic': topic})
 
 
 @login_required
 def topicstatus(request):
     topics = Topic.objects.all()
-    return render(request, "topicstatus.html", {'topics': topics})
+    return TemplateResponse(request, "topicstatus.html", {'topics': topics})
 
 
 @login_required
@@ -71,7 +71,9 @@ def create(request):
         form = ProposalForm()
 
     topics = Topic.objects.all()
-    return render(request, 'cfpcreate.html', {'topics': topics, 'form': form})
+    return TemplateResponse(request, 'cfpcreate.html',
+                            {'topics': topics,
+                             'form': form})
 
 
 @login_required
@@ -87,12 +89,12 @@ def details(request, proposalid):
     else:
         form = CommentForm()
     comments = Comment.objects.filter(proposal=proposal)
-    return render(request, "cfpdetails.html",
-                  {'proposal': proposal,
-                   'form': form,
-                   'comments': comments,
-                   'editable': is_editable(proposal, request.user),
-                   'blueprints': linkify(proposal.blueprints)})
+    return TemplateResponse(request, "cfpdetails.html",
+                            {'proposal': proposal,
+                             'form': form,
+                             'comments': comments,
+                             'editable': is_editable(proposal, request.user),
+                             'blueprints': linkify(proposal.blueprints)})
 
 
 @login_required
@@ -107,8 +109,8 @@ def edit(request, proposalid):
             return HttpResponseRedirect('/%s' % request.session['lastlist'])
     else:
         form = ProposalEditForm(instance=proposal)
-    return render(request, 'cfpedit.html', {'form': form,
-                                            'proposal': proposal})
+    return TemplateResponse(request, 'cfpedit.html', {'form': form,
+                                                      'proposal': proposal})
 
 
 @login_required
@@ -119,7 +121,7 @@ def delete(request, proposalid):
     if request.method == 'POST':
         proposal.delete()
         return HttpResponseRedirect('/%s' % request.session['lastlist'])
-    return render(request, 'cfpdelete.html', {'proposal': proposal})
+    return TemplateResponse(request, 'cfpdelete.html', {'proposal': proposal})
 
 
 @login_required
@@ -138,8 +140,8 @@ def switch(request, proposalid):
             return HttpResponseRedirect('/%s' % request.session['lastlist'])
     else:
         form = ProposalSwitchForm(instance=proposal)
-    return render(request, 'cfpswitch.html', {'form': form,
-                                              'proposal': proposal})
+    return TemplateResponse(request, 'cfpswitch.html', {'form': form,
+                                                        'proposal': proposal})
 
 
 @login_required
@@ -191,11 +193,11 @@ You can edit your proposal at: %s/cfp/edit/%s""" \
     else:
         form = ProposalReviewForm(instance=proposal)
     comments = Comment.objects.filter(proposal=proposal)
-    return render(request, 'cfpreview.html',
-                  {'form': form,
-                   'proposal': proposal,
-                   'comments': comments,
-                   'blueprints': linkify(proposal.blueprints)})
+    return TemplateResponse(request, 'cfpreview.html',
+                            {'form': form,
+                             'proposal': proposal,
+                             'comments': comments,
+                             'blueprints': linkify(proposal.blueprints)})
 
 
 def dologout(request):

@@ -34,12 +34,6 @@ DATABASES = {
     }
 }
 
-EVENT_TITLE = "Grizzly Design Summit"
-EVENT_SUBTITLE = "OpenStack Summit, San Diego, Oct 15-18, 2012"
-
-SCHED_URL = "essexdesignsummit"
-SCHED_API_KEY = "getThisFromSched"
-
 SITE_ID = 1
 
 STATIC_URL = '/media/'
@@ -59,7 +53,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.i18n",
     "django.core.context_processors.media",
     "django.core.context_processors.request",
-    "odsreg.cfp.context_processors.event",
 )
 
 MIDDLEWARE_CLASSES = (
@@ -67,6 +60,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'odsreg.cfp.middleware.EventMiddleware',
 )
 
 ROOT_URLCONF = 'odsreg.urls'

@@ -7,7 +7,11 @@
 {% endblock %}
 {% block content %}
 <script type="text/javascript" src="/media/sorting.js"></script>
+{% if event.status == 'A' %}
 <a class=roundedButton href=/cfp/create>Suggest session</A>
+{% else %}
+Session suggestion is now closed.
+{% endif %}
 {% for topic in reviewable_topics %}
 <a class=roundedButton href="/cfp/topic/{{ topic.id }}">Review topic: {{ topic.name }}</A>
 {% endfor %}
