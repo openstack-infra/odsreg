@@ -16,8 +16,8 @@
 import json
 
 from django.core.management.base import BaseCommand, CommandError
-from scheduling.models import Slot, Room
-from cfp.models import Topic
+from odsreg.scheduling.models import Slot, Room
+from odsreg.cfp.models import Topic
 
 
 class Command(BaseCommand):

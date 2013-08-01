@@ -16,7 +16,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-from cfp.utils import validate_bp
+from odsreg.cfp.utils import validate_bp
 
 
 class Event(models.Model):

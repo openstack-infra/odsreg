@@ -16,7 +16,7 @@
 import json
 
 from django.core.management.base import BaseCommand, CommandError
-from cfp.models import Event, Topic
+from odsreg.cfp.models import Event, Topic
 
 
 class Command(BaseCommand):
