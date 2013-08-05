@@ -44,9 +44,9 @@ class Command(BaseCommand):
             r = Room(code=roomcode, name=roomdesc)
             r.save()
 
-        for topicname, desc in data['topics'].iteritems():
+        for desc in data['allocations']:
             started = False
-            t = Topic.objects.get(name=topicname)
+            t = Topic.objects.get(name=desc['topic'])
             room = Room.objects.get(code=desc['room'])
             for (d, h) in slot_generator(data):
                 if (d == desc['start_day'] and h == desc['first_slot']):
