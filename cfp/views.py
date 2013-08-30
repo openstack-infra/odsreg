@@ -86,8 +86,7 @@ def details(request, proposalid):
             comment.proposal = proposal
             comment.author = request.user
             comment.save()
-    else:
-        form = CommentForm()
+    form = CommentForm()
     comments = Comment.objects.filter(proposal=proposal)
     return TemplateResponse(request, "cfpdetails.html",
                             {'proposal': proposal,
