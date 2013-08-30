@@ -40,6 +40,9 @@ class Topic(models.Model):
     lead_username = models.CharField(max_length=40)
     description = models.TextField(blank=True)
 
+    class Meta:
+        ordering = ['name']
+
     def __unicode__(self):
         return self.name
 
