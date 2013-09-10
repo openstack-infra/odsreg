@@ -13,10 +13,11 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-from odsreg.cfp.models import Topic, Proposal, Event
+from odsreg.cfp.models import Topic, Proposal, Event, Comment
 from django.contrib import admin
 
 
 admin.site.register(Topic)
 admin.site.register(Proposal)
 admin.site.register(Event)
+admin.site.register(Comment)
