@@ -5,6 +5,6 @@
 {% if comment.author == proposal.proposer %}<i>[proposer]</i>{% endif %}
 {% if comment.author.username == proposal.topic.lead_username %}<i>[topiclead]</i>{% endif %}
 on {{ comment.posted_date|date:"Y-m-d G:i O" }}:<br>
-{{ comment.content|linebreaks|urlize }}</p>
+{{ comment.content|urlize|linebreaks }}</p>
 <br><hr>
 {% endfor %}
