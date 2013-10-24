@@ -75,8 +75,7 @@ def publish(request, topicid):
                       'name': smart_str(combined_title(slot)),
                       'session_start': slot.start_time,
                       'session_end': end_time(slot.start_time),
-                      'session_type': 'Design Summit',
-                      'session_subtype': slot.topic,
+                      'session_type': slot.topic,
                       'venue': slot.room.name,
                       'description': htmlize(smart_str(
                                               full_description(slot)))}
