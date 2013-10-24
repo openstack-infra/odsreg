@@ -175,7 +175,7 @@ The topic lead (%s) changed status from %s to %s.
 Reviewer's notes:
 %s
 
-You can edit your proposal at: %s/cfp/edit/%s""" \
+You can access your proposal at: %s/cfp/details/%s""" \
                         % (proposal.topic.lead_username,
                            smart_str(proposal.title),
                            proposal.topic.lead_username,
