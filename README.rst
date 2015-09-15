@@ -21,6 +21,14 @@ You'll need the following Python modules installed:
  - django (1.4+)
  - python-django-auth-openid
 
+OR
+
+If you are using pip with or without a venv,
+you can use the following commands instead:
+ - pip install django==1.4
+ - pip install python-openid
+ - pip install django-openid-auth
+
 
 Configuration and Usage
 -----------------------
