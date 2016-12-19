@@ -1,5 +1,3 @@
-# Django settings for odsreg project.
-#
 # Copyright 2011 Thierry Carrez <thierry@openstack.org>
 # All Rights Reserved.
 #
@@ -15,29 +13,18 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-# Override application settings
+from django.conf.urls import include, url
+from django.contrib import admin
 
-# Real database location
-DATABASES = {
-    'default': {
-        'NAME': 'summit.db',
-        'ENGINE': 'django.db.backends.sqlite3',
-    }
-}
+from cfp import views
 
-SECRET_KEY = 'generateRandomOneHere'
+admin.autodiscover()
 
-# Run in production
-DEBUG = False
-TEMPLATE_DEBUG = DEBUG
-#OPENID_USE_AS_ADMIN_LOGIN = True
-
-# Emails
-SEND_MAIL = False
-EMAIL_PREFIX = "[DesignSummit] "
-EMAIL_FROM = "noreply@devnull.com"
-EMAIL_HOST = "mail.devnull.com"
-EMAIL_PORT = 25
-#EMAIL_HOST_USER = SMTPUsername
-#EMAIL_HOST_PASSWORD = SMTPPassword
-#EMAIL_USE_TLS = True
+urlpatterns = [
+    url(r'^openid/', include('django_openid_auth.urls')),
+    url(r'^$', views.list),
+    url(r'^cfp/', include('cfp.urls')),
+    url(r'^scheduling/', include('scheduling.urls')),
+    url(r'^admin/', include(admin.site.urls)),
+    url(r'^logout$', views.dologout),
+]

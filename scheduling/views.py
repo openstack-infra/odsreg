@@ -19,13 +19,13 @@ import urllib2
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.template.response import TemplateResponse
 from django.utils.encoding import smart_str
-from odsreg.cfp.models import Proposal, Topic, Event
-from odsreg.cfp.utils import topiclead
-from odsreg.scheduling.forms import SlotForm
-from odsreg.scheduling.models import Slot
-from odsreg.scheduling.utils import combined_id, combined_title
-from odsreg.scheduling.utils import combined_description, full_description
-from odsreg.scheduling.utils import htmlize, end_time
+from cfp.models import Proposal, Topic, Event
+from cfp.utils import topiclead
+from scheduling.forms import SlotForm
+from scheduling.models import Slot
+from scheduling.utils import combined_id, combined_title
+from scheduling.utils import combined_description, full_description
+from scheduling.utils import htmlize, end_time
 
 
 def scheduling(request, topicid):

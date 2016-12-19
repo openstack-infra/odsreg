@@ -13,16 +13,18 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-from django.conf.urls.defaults import *
+from django.conf.urls import url
+
+from cfp import views
 
 
-urlpatterns = patterns('odsreg.cfp.views',
-    (r'^details/(\d+)$', 'details'),
-    (r'^edit/(\d+)$', 'edit'),
-    (r'^create$', 'create'),
-    (r'^review/(\d+)$', 'review'),
-    (r'^switch/(\d+)$', 'switch'),
-    (r'^delete/(\d+)$', 'delete'),
-    (r'^topic/(\d+)$', 'topiclist'),
-    (r'^topicstatus$', 'topicstatus'),
-)
+urlpatterns = [
+   url(r'^details/(\d+)$', views.details),
+   url(r'^edit/(\d+)$', views.edit),
+   url(r'^create$', views.create),
+   url(r'^review/(\d+)$', views.review),
+   url(r'^switch/(\d+)$', views.switch),
+   url(r'^delete/(\d+)$', views.delete),
+   url(r'^topic/(\d+)$', views.topiclist),
+   url(r'^topicstatus$', views.topicstatus),
+]

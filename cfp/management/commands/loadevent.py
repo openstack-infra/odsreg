@@ -16,20 +16,22 @@
 import json
 
 from django.core.management.base import BaseCommand, CommandError
-from odsreg.cfp.models import Event, Topic
+from cfp.models import Event, Topic
 
 
 class Command(BaseCommand):
     args = '<description.json>'
     help = 'Create topics from JSON description'
 
-    def handle(self, *args, **options):
+    def add_arguments(self, parser):
+        parser.add_argument('descriptive_json')
 
-        if len(args) != 1:
+    def handle(self, *args, **options):
+        if 'descriptive_json' not in options.keys():
             raise CommandError('Incorrect arguments')
 
         try:
-            with open(args[0]) as f:
+            with open(options['descriptive_json']) as f:
                 data = json.load(f)
         except ValueError as exc:
             raise CommandError("Malformed JSON: %s" % exc.message)

@@ -15,7 +15,7 @@
 
 from django.forms import ModelForm
 
-from odsreg.scheduling.models import Slot
+from scheduling.models import Slot
 
 
 class SlotForm(ModelForm):

@@ -15,7 +15,7 @@
 
 from django.shortcuts import render
 
-from odsreg.cfp.models import Event
+from cfp.models import Event
 
 
 class EventMiddleware():

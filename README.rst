@@ -18,14 +18,14 @@ Prerequisites
 -------------
 
 You'll need the following Python modules installed:
- - django (1.4+)
+ - django (1.8+)
  - python-django-auth-openid
 
 OR
 
 If you are using pip with or without a venv,
 you can use the following commands instead:
- - pip install django==1.4
+ - pip install django
  - pip install python-openid
  - pip install django-openid-auth
 
@@ -33,11 +33,14 @@ you can use the following commands instead:
 Configuration and Usage
 -----------------------
 
-Copy local_settings.py.sample to local_settings.py and change
-settings there.
+Copy odsreg/local_settings.py.sample to odsreg/local_settings.py and change
+settings there. In particular you should set DEBUG=True or ALLOWED_HOSTS.
 
 Create empty database:
-./manage.py syncdb
+./manage.py migrate
+
+Create a superuser:
+./manage.py createsuperuser
 
 Copy event.json.sample to event.json and edit the file to match
 the event and topics you want to have. Then run:

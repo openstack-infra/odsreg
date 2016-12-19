@@ -13,7 +13,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-from odsreg.scheduling.models import Slot, Room
+from scheduling.models import Slot, Room
 from django.contrib import admin
 
 

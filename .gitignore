@@ -4,5 +4,7 @@
 *.sqlite
 *.db
 *~
-local_settings.py
+.venv
+odsreg/local_settings.py
+event.json
 slots.json

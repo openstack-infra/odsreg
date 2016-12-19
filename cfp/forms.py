@@ -15,7 +15,7 @@
 
 from django.forms import ModelForm, CharField, Textarea
 
-from odsreg.cfp.models import Comment, Proposal
+from cfp.models import Comment, Proposal
 
 
 class CommentForm(ModelForm):

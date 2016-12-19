@@ -13,13 +13,14 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-from django.conf.urls.defaults import *
+from django.conf.urls import url
 
+from scheduling import views
 
-urlpatterns = patterns('odsreg.scheduling.views',
-    (r'^(\d+)$', 'scheduling'),
-    (r'^edit/(\d+)$', 'edit'),
-    (r'^swap/(\d+)$', 'swap'),
-    (r'^publish/(\d+)$', 'publish'),
-    (r'^graph/(\d+)$', 'graph'),
-)
+urlpatterns = [
+    url(r'^(\d+)$', views.scheduling),
+    url(r'^edit/(\d+)$', views.edit),
+    url(r'^swap/(\d+)$', views.swap),
+    url(r'^publish/(\d+)$', views.publish),
+    url(r'^graph/(\d+)$', views.graph),
+]

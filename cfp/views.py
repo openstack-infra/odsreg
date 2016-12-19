@@ -22,10 +22,10 @@ from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.template.response import TemplateResponse
 from django.utils.encoding import smart_str
 
-from odsreg.cfp.models import Proposal, Topic, Comment
-from odsreg.cfp.forms import ProposalForm, ProposalEditForm, CommentForm
-from odsreg.cfp.forms import ProposalReviewForm, ProposalSwitchForm
-from odsreg.cfp.utils import linkify, is_editable, topiclead
+from cfp.models import Proposal, Topic, Comment
+from cfp.forms import ProposalForm, ProposalEditForm, CommentForm
+from cfp.forms import ProposalReviewForm, ProposalSwitchForm
+from cfp.utils import linkify, is_editable, topiclead
 
 
 @login_required

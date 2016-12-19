@@ -15,7 +15,7 @@
 
 from django.db import models
 
-from odsreg.cfp.models import Proposal, Topic
+from cfp.models import Proposal, Topic
 
 
 class Room(models.Model):
@@ -33,7 +33,7 @@ class Slot(models.Model):
     start_time = models.CharField(max_length=16)
     room = models.ForeignKey(Room)
     topic = models.ForeignKey(Topic)
-    proposals = models.ManyToManyField(Proposal, blank=True, null=True)
+    proposals = models.ManyToManyField(Proposal, blank=True)
     title = models.CharField(max_length=60, blank=True,
         verbose_name="Override title with",
         help_text="Default title is the title of the first proposal. You can"
