@@ -36,6 +36,9 @@ Configuration and Usage
 Copy odsreg/local_settings.py.sample to odsreg/local_settings.py and change
 settings there. In particular you should set DEBUG=True or ALLOWED_HOSTS.
 
+Build migrations files:
+./manage.py makemigrations cfp
+
 Create empty database:
 ./manage.py migrate
 
