@@ -13,7 +13,7 @@
 {% block content %}
 <script type="text/javascript" src="/media/sorting.js"></script>
 <div class="span-8">
-<h2>{{ topic.name }}</h2>
+<h2>{% if multitopic %}{{ topic.name }}{% else %}Review proposed sessions{% endif %}</h2>
 <a class=roundedButton href=/>Back to proposals list</A>
 {% if sched %}
 <a class=roundedButton href="/scheduling/{{ topic.id }}">Scheduling</A>
@@ -22,7 +22,9 @@
 </div>
 <table>
 <tr>
+{% if multitopic %}
 <th>Topic</th>
+{% endif %}
 <th><a class="nolink"
      href="" onclick="ts_resortTable(this); return false;">Title<img
      class="sortarrow" src="/media/arrowBlank" height="6" width="9"></a>
@@ -37,6 +39,7 @@
 </tr>
 {% for proposal in proposals %}
 <tr>
+{% if multitopic %}
 <td>
 {% if proposal.scheduled %}
 {{ proposal.topic.name }}
@@ -44,6 +47,7 @@
 <a href="/cfp/switch/{{ proposal.id }}">{{ proposal.topic.name }}</a>
 {% endif %}
 </td>
+{% endif %}
 <td>
 <a href="/cfp/details/{{ proposal.id }}">{{ proposal.title }}</a>
 </td>

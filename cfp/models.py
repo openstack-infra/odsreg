@@ -60,7 +60,7 @@ class Proposal(models.Model):
     description = models.TextField(
         help_text="The detailed subject and goals for your proposed session. "
                   "This is mandatory.")
-    topic = models.ForeignKey(Topic,
+    topic = models.ForeignKey(Topic, default=1,
         help_text="The topic the session belongs in. Click 'Help' below"
                   " for more details. This is mandatory.")
     blueprints = models.CharField(max_length=400, blank=True,

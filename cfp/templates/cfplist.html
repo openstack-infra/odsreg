@@ -13,13 +13,15 @@
 Session suggestion is now closed.
 {% endif %}
 {% for topic in reviewable_topics %}
-<a class=roundedButton href="/cfp/topic/{{ topic.id }}">Review topic: {{ topic.name }}</A>
+<a class=roundedButton href="/cfp/topic/{{ topic.id }}">Review {% if multitopic %}topic: {{ topic.name }}{% else %}proposed sessions{% endif %}</A>
 {% endfor %}
 <table>
 <tr>
+{% if multitopic %}
 <th><a class="nolink"
      href="" onclick="ts_resortTable(this); return false;">Topic<img
      class="sortarrow" src="/media/arrowBlank" height="6" width="9"></a></th>
+{% endif %}
 <th><a class="nolink"
      href="" onclick="ts_resortTable(this); return false;">Title<img
      class="sortarrow" src="/media/arrowBlank" height="6" width="9"></a>
@@ -33,7 +35,9 @@ Session suggestion is now closed.
 </tr>
 {% for proposal in proposals %}
 <tr>
+{% if multitopic %}
 <td>{{ proposal.topic.name }}</td>
+{% endif %}
 <td>
     <a href="/cfp/details/{{ proposal.id }}">{{ proposal.title }}</a>
 </td>

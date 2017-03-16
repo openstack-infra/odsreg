@@ -30,17 +30,20 @@ from cfp.utils import linkify, is_editable, topiclead
 
 @login_required
 def list(request):
+    multitopic = Topic.objects.count() > 1
     proposals = Proposal.objects.all()
     reviewable_topics = Topic.objects.filter(
         lead_username=request.user.username)
     request.session['lastlist'] = ""
     return TemplateResponse(request, "cfplist.html",
                             {'proposals': proposals,
+                             'multitopic': multitopic,
                              'reviewable_topics': reviewable_topics})
 
 
 @login_required
 def topiclist(request, topicid):
+    multitopic = Topic.objects.count() > 1
     topic = Topic.objects.get(id=topicid)
     if not topiclead(request.user, topic):
         return HttpResponseForbidden("Forbidden")
@@ -48,6 +51,7 @@ def topiclist(request, topicid):
     request.session['lastlist'] = "cfp/topic/%s" % topicid
     return TemplateResponse(request, "topiclist.html",
                             {'proposals': proposals,
+                             'multitopic': multitopic,
                              'sched': 'scheduling' in settings.INSTALLED_APPS,
                              'topic': topic})
 
