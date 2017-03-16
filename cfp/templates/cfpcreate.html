@@ -1,6 +1,6 @@
 {% extends "regform.html" %}
 {% block helppage %}
-<p>This page lets you suggest a session topic for the Design Summit.</p>
+<p>This page lets you suggest a session topic for the {{ event.title }}.</p>
 <p>Fill the <i>Title</i>, <i>Description</i> and <i>Topic</i> mandatory fields. You can also add links to existing Launchpad blueprints you created on the same subject, or add additional notes to further explain your idea to the PTL or lead responsible for selecting the content.</p>
 <p>You should pay special attention to the <i>Topic</i>, as you can't change it yourself later. Available topics are:</p>
 {% for topic in topics %}
