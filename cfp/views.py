@@ -48,6 +48,7 @@ def topiclist(request, topicid):
     request.session['lastlist'] = "cfp/topic/%s" % topicid
     return TemplateResponse(request, "topiclist.html",
                             {'proposals': proposals,
+                             'sched': 'scheduling' in settings.INSTALLED_APPS,
                              'topic': topic})
 
 

@@ -84,7 +84,7 @@ INSTALLED_APPS = [
     'django_openid_auth',
     'django.contrib.admin',
     'cfp',
-    'scheduling',
+    # 'scheduling',
 ]
 
 AUTHENTICATION_BACKENDS = (

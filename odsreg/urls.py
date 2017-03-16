@@ -24,7 +24,7 @@ urlpatterns = [
     url(r'^openid/', include('django_openid_auth.urls')),
     url(r'^$', views.list),
     url(r'^cfp/', include('cfp.urls')),
-    url(r'^scheduling/', include('scheduling.urls')),
+    # url(r'^scheduling/', include('scheduling.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^logout$', views.dologout),
 ]
