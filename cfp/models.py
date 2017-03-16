@@ -51,7 +51,7 @@ class Proposal(models.Model):
     STATUSES = (
                 ('U', 'Unreviewed'),
                 ('I', 'Incomplete'),
-                ('A', 'Preapproved'),
+                ('A', 'Approved'),
                 ('R', 'Refused'),
                )
     proposer = models.ForeignKey(User)
