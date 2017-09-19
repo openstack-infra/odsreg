@@ -55,7 +55,7 @@ class Proposal(models.Model):
                 ('R', 'Refused'),
                )
     proposer = models.ForeignKey(User)
-    title = models.CharField(max_length=50,
+    title = models.CharField(max_length=60,
         help_text="The title of your proposed session. This is mandatory.")
     description = models.TextField(
         help_text="The detailed subject and goals for your proposed session. "
