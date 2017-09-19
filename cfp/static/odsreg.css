@@ -254,12 +254,6 @@ hr.space {background:#fff;color:#fff;visibility:hidden;}
 
 html { overflow-y: scroll; }
 
-body {
-	background: white url(openstack-page-bkg.jpg) no-repeat scroll 0px 0px;
-	border-top: 3px solid #255e6e;
-	color: #535353;
-}
-
 h3 {
 	margin-top: 10px;
 	margin-bottom: 0px;
@@ -297,7 +291,7 @@ h1, h2, h3, h4 {
 }
 
 h1 {
-	font-size: 28px;
+	font-size: 32px;
 	margin-top:15px;
 	margin-bottom:5px;
 }
@@ -308,7 +302,7 @@ h2 {
 }
 
 h3 {
-	font-size: 14px;
+	font-size: 16px;
 	margin-top:0px;
 }
 
@@ -344,13 +338,13 @@ th.right, td.right {
 
 #logo a {
 	display: block;
-	margin-top: 8px;
+	margin-top:-20px;
 	margin-bottom: 20px;
 	text-indent: -1000em;
 	background: url(openstack-logo.png) no-repeat left center;
-	height: 54px;
-	width: 177px;
-	margin-left: -10px;
+	height: 88px;
+	width: 172px;
+	margin-left: 0px;
 }
 
 #header {
