@@ -12,9 +12,15 @@
 {% else %}
 Session suggestion is now closed.
 {% endif %}
+{% if multitopic %}
 {% for topic in reviewable_topics %}
-<a class=roundedButton href="/cfp/topic/{{ topic.id }}">Review {% if multitopic %}topic: {{ topic.name }}{% else %}proposed sessions{% endif %}</A>
+<a class=roundedButton href="/cfp/topic/{{ topic.id }}">Review topic: {{ topic.name }}</A>
 {% endfor %}
+{% else %}
+{% if user.is_superuser %}
+<a class=roundedButton href="/cfp/topic/1">Review proposed sessions</A>
+{% endif %}
+{% endif %}
 <table>
 <tr>
 {% if multitopic %}
